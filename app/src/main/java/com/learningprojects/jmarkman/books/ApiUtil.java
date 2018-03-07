@@ -1,5 +1,6 @@
 package com.learningprojects.jmarkman.books;
 
+import android.net.Uri;
 import android.util.Log;
 
 import java.io.IOException;
@@ -18,15 +19,37 @@ public class ApiUtil
 
     public static final String BASE_API_URL = "https://www.googleapis.com/books/v1/volumes";
 
+    private static final String QUERY_PARAMETER_KEY = "q";
+    public static final String KEY = "key";
+    public static final String API_KEY = "AIzaSyAz_uuFALaLoqgH_kwKBYuyMrWO4s9mzFw";
+
     public static URL buildURL(String title)
     {
         // Not the recommended approach to building a api query
-        String fullUrl = BASE_API_URL + "?q=" + title;
+/*        String fullUrl = BASE_API_URL + "?q=" + title;
         URL url = null;
 
         try
         {
             url = new URL(fullUrl);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
+        return url;*/
+
+        // The recommended approach
+        URL url = null;
+        Uri uri = Uri.parse(BASE_API_URL).buildUpon()
+                .appendQueryParameter(QUERY_PARAMETER_KEY, title)
+                .appendQueryParameter(KEY, API_KEY)
+                .build();
+
+        try
+        {
+            url = new URL(uri.toString());
         }
         catch (Exception e)
         {
