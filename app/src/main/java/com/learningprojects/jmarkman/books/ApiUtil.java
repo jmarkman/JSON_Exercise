@@ -131,12 +131,27 @@ public class ApiUtil
                     authors[j] = volumeInfoJSON.getJSONArray(AUTHORS).get(j).toString();
                 }
 
+                // Simone forgot to include a check for the values in the JSON object to see
+                // whether or not they exist for every item in the JSON object
+                // https://stackoverflow.com/questions/19043243/error-org-json-jsonexception-no-value-for-project-name-this-is-my-json
+                // TODO: play around with his getBooksFromJSON method to make it flow a little better
+                String publisher = "";
+
+                if (bookJSON.has(PUBLISHER))
+                {
+                    publisher = volumeInfoJSON.getString(PUBLISHER);
+                }
+                else
+                {
+                    publisher = "";
+                }
+
                 Book book = new Book(
                         bookJSON.getString(ID),
                         volumeInfoJSON.getString(TITLE),
                         (volumeInfoJSON.isNull(SUBTITLE) ? "" : volumeInfoJSON.getString(SUBTITLE)),
                         authors,
-                        volumeInfoJSON.getString(PUBLISHER),
+                        publisher,
                         volumeInfoJSON.getString(PUBLISHED_DATE)
                 );
 
