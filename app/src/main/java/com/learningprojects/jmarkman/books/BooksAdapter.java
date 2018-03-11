@@ -44,7 +44,7 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.BookViewHold
         return books.size();
     }
 
-    public class BookViewHolder extends RecyclerView.ViewHolder
+    public class BookViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener
     {
         TextView tvTitle;
         TextView tvAuthors;
@@ -75,6 +75,11 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.BookViewHold
             tvAuthors.setText(authors);
             tvDate.setText(book.publishedDate);
             tvPublisher.setText(book.publisher);
+        }
+
+        @Override
+        public void onClick(View view) {
+
         }
     }
 }
