@@ -1,6 +1,7 @@
 package com.learningprojects.jmarkman.books;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -58,28 +59,25 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.BookViewHold
             tvAuthors = (TextView) itemView.findViewById(R.id.tv_authors);
             tvDate = (TextView) itemView.findViewById(R.id.tv_published_date);
             tvPublisher = (TextView) itemView.findViewById(R.id.tv_publisher);
+            itemView.setOnClickListener(this);
         }
         
         public void bind (Book book)
         {
             tvTitle.setText(book.title);
-            String authors = "";
-
-            for (int i = 0; i < book.authors.length; i++)
-            {
-                authors += book.authors[i];
-                if (i < book.authors.length)
-                    authors += ", ";
-            }
-
-            tvAuthors.setText(authors);
+            tvAuthors.setText(book.authors);
             tvDate.setText(book.publishedDate);
             tvPublisher.setText(book.publisher);
         }
 
         @Override
-        public void onClick(View view) {
-
+        public void onClick(View view)
+        {
+            int position = getAdapterPosition();
+            Book selectedBook = books.get(position);
+            Intent intent = new Intent(view.getContext(), BookDetail.class);
+            intent.putExtra("Book", selectedBook);
+            view.getContext().startActivity(intent);
         }
     }
 }

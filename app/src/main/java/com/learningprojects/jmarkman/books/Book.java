@@ -1,7 +1,12 @@
 package com.learningprojects.jmarkman.books;
 
+import android.databinding.BindingAdapter;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.text.TextUtils;
+import android.widget.ImageView;
+
+import com.squareup.picasso.Picasso;
 
 /**
  * Created by jmarkman on 3/7/2018.
@@ -12,29 +17,36 @@ public class Book implements Parcelable
     public String id;
     public String title;
     public String subtitle;
-    public String[] authors;
+    public String authors;
     public String publisher;
     public String publishedDate;
+    public String description;
+    public String thumbnail;
 
 
-    public Book(String id, String title, String subtitle, String[] authors, String publisher, String publishedDate)
+    public Book(String id, String title, String subtitle, String[] authors, String publisher, String publishedDate, String description, String thumbnail)
     {
         this.id = id;
         this.title = title;
         this.subtitle = subtitle;
-        this.authors = authors;
+        this.authors = TextUtils.join(", ", authors);
         this.publisher = publisher;
         this.publishedDate = publishedDate;
+        this.description = description;
+        this.thumbnail = thumbnail;
     }
 
 
-    protected Book(Parcel in) {
+    protected Book(Parcel in)
+    {
         id = in.readString();
         title = in.readString();
         subtitle = in.readString();
-        authors = in.createStringArray();
+        authors = in.readString();
         publisher = in.readString();
         publishedDate = in.readString();
+        description = in.readString();
+        thumbnail = in.readString();
     }
 
     public static final Creator<Book> CREATOR = new Creator<Book>() {
@@ -59,8 +71,19 @@ public class Book implements Parcelable
         parcel.writeString(id);
         parcel.writeString(title);
         parcel.writeString(subtitle);
-        parcel.writeStringArray(authors);
+        parcel.writeString(authors);
         parcel.writeString(publisher);
         parcel.writeString(publishedDate);
+        parcel.writeString(description);
+        parcel.writeString(thumbnail);
+    }
+
+    @BindingAdapter({"android:imageUrl"})
+    public static void loadImage(ImageView view, String imageUrl)
+    {
+        Picasso.with(view.getContext())
+                .load(imageUrl)
+                .placeholder(R.drawable.book_open)
+                .into(view);
     }
 }
